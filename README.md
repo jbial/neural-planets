@@ -63,6 +63,7 @@ Note that the actual `config/other.yaml` file contains comments explaining each 
 ### TODO
 - More `_postprocess` function varieties/heuristics in `model.py`
 - Finish Documentation
-- Colormap interpolation
-- More animations
+- GPU support
+- Colormap interpolation between planets
+- More animation types (interpolation of any continuous parameter)
 - Flow maps on the surface
