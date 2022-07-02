@@ -5,10 +5,10 @@ Neural planets is a repository for rendering planet-like spheres with topography
 to be large. With a mixture of 12 continuous and discrete design parameters (not including neural network weight parameters which can be arbitrarily large), the variety of planets is endless.
 
 <p float="left">
-  <img src="samples/s1.png" width="249" />
-  <img src="samples/s2.png" width="250" />
-  <img src="samples/s3.png" width="250" />
-  <img src="samples/s4.png" width="250" />
+  <img src="samples/s1.png" width="200" />
+  <img src="samples/s2.png" width="200" />
+  <img src="samples/s3.png" width="200" />
+  <img src="samples/s4.png" width="200" />
 </p>
 
 ### Usage
