@@ -4,7 +4,9 @@
 Neural planets is a repository for rendering planet-like spheres with topography generated from random neural networks. The design-space is intentionally crafted
 to be large. With a mixture of 12 continuous and discrete design parameters (not including neural network weight parameters which can be arbitrarily large), the variety of planets is endless. Dedicated to Manxin Chen.
 
-![](samples/planet_interpolation.gif)
+<p align="center">
+  <img src="samples/planet_interpolation.gif" alt="animated" />
+</p>
 
 <p float="left">
   <img src="samples/s1.png" width="200" />
