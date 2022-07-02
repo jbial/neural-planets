@@ -1,0 +1,41 @@
+fig_size: [10, 10]  # for (phi, theta) plane visualization
+dpi: 200
+
+# Can select from the following colormaps for the 2D projection
+# (see https://matplotlib.org/stable/tutorials/colors/colormaps.html for visuals):
+#   [
+#       'Accent','Blues','BrBG','BuGn','BuPu','CMRmap','Dark2','GnBu','Greens','Greys','OrRd','Oranges','PRGn',
+#       'Paired','Pastel1','Pastel2','PiYG','PuBu','PuBuGn','PuOr','PuRd','Purples','RdBu','RdGy','RdPu','RdYlBu',
+#       'RdYlGn','Reds','Set1','Set2','Set3','Spectral','Vega10','Vega20','Vega20b','Vega20c','Wistia','YlGn','YlGnBu',
+#       'YlOrBr','YlOrRd','afmhot','autumn','binary','black-white','blue-red','bone','brg','bwr','cool','coolwarm',
+#       'copper','cubehelix','file','gist_earth','gist_gray','gist_heat','gist_ncar','gist_rainbow','gist_stern',
+#       'gist_yarg','gnuplot','gnuplot2','gray','hot','hsv','inferno','jet','magma','nipy_spectral','ocean','pink',
+#       'plasma','rainbow','seismic','spectral','spring','summer','terrain','viridis','winter'
+#   ]
+# Available mayavi colormaps (used for animation and sphere renderings) are:
+
+#   accent       flag          hot      pubu     set2
+#   autumn       gist_earth    hsv      pubugn   set3
+#   black-white  gist_gray     jet      puor     spectral
+#   blue-red     gist_heat     oranges  purd     spring
+#   blues        gist_ncar     orrd     purples  summer
+#   bone         gist_rainbow  paired   rdbu     winter
+#   brbg         gist_stern    pastel1  rdgy     ylgnbu
+#   bugn         gist_yarg     pastel2  rdpu     ylgn
+#   bupu         gnbu          pink     rdylbu   ylorbr
+#   cool         gray          piyg     rdylgn   ylorrd
+#   copper       greens        prgn     reds
+#   dark2        greys         prism    set1
+
+colormap: 'gist_earth'
+
+bg_color: [0., 0., 0.]  # background color
+img_size: [500, 500]  # resolution for planet renderings and animations
+save_format: png
+
+# animation parameters
+animation_type: rotation
+duration: 10  # in seconds
+view_distance: 100  # distance btwn camera and planet
+frames_per_second: 30
+animation_path: "videos/rotate.gif"  # GIF save format

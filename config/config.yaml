@@ -1,0 +1,13 @@
+defaults:
+  - model
+  - visualization
+  - override hydra/job_logging: none  
+
+map_resolution: 512
+noise_levels: 5
+random_seed: 999
+prefix: "planet"
+
+hydra:
+  run:
+    dir: ./

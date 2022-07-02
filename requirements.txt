@@ -1,0 +1,6 @@
+moviepy
+mayavi
+numpy
+matplotlib
+torch
+hydra-core

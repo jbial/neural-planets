@@ -1,0 +1,14 @@
+model:
+
+  in_dim: 3
+  layers: [64, 64, 64]
+  radius: 10
+  activations: [sigmoid, sin, tanh]
+  zdim: 16 
+  ffeats: 8
+  ffscale: 1
+  final_activation: tanh
+  init_limit: 2
+  noise_decay: 0.25
+  noise_scale: 2
+  min_delta: 0.5
