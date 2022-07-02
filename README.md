@@ -11,8 +11,8 @@ to be large. With a mixture of 12 continuous and discrete design parameters (not
 <p float="left">
   <img src="samples/s1.png" width="209" />
   <img src="samples/s2.png" width="209" />
-  <img src="samples/s3.png" width="210" />
-  <img src="samples/s4.png" width="210" />
+  <img src="samples/s3.png" width="209" />
+  <img src="samples/s4.png" width="209" />
 </p>
 
 ### Usage
