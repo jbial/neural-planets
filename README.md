@@ -8,11 +8,11 @@ to be large. With a mixture of 12 continuous and discrete design parameters (not
   <img src="samples/planet_interpolation.gif" alt="animated" />
 </p>
 
-<p float="left">
-  <img src="samples/s1.png" width="200" />
-  <img src="samples/s2.png" width="200" />
-  <img src="samples/s3.png" width="200" />
-  <img src="samples/s4.png" width="200" />
+<p align="center">
+  <img src="samples/s1.png" width="204" />
+  <img src="samples/s2.png" width="204" />
+  <img src="samples/s3.png" width="204" />
+  <img src="samples/s4.png" width="204" />
 </p>
 
 ### Usage
@@ -31,7 +31,7 @@ python scripts/generate_planet.py prefix=unique-identifying-prefix random_seed=3
 #### 2. Generating animations
 Generating animations requires the same parameters as above (except for the planet interpolation animation) with the addition of the `duration`, `view_distance`, `frames_per_second`, and the `animation_type` (most important) parameters. Simply add these parameters to the command and change to the `scripts/animate_planet.py` file:
 ```
-python scripts/generate_planet.py prefix=unique-identifying-prefix random_seed=30 noise_levels=8 duration=10 view_distance=100 frames_per_second=30 animation_type=rotation
+python scripts/animate_planet.py prefix=unique-identifying-prefix random_seed=30 noise_levels=8 duration=10 view_distance=100 frames_per_second=30 animation_type=rotation
 ```
 For brevity, I left out the command line parameters for the model.
 
