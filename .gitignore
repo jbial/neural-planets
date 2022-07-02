@@ -1,5 +1,7 @@
 **/.ipynb_checkpoints/*
 **/__pycache__/*
+**/.DS_Store/*
 **/.hydra/*
+*.egg-info/**
 videos/*
 images/*
