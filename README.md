@@ -16,6 +16,7 @@ to be large. With a mixture of 12 continuous and discrete design parameters (not
 </p>
 
 ### Usage
+----
 Usage of this software requires Python 3.6 or higher, pip, and access to a command line. To setup, run `pip install -r requirements.txt` to install the necessary python modules, and then run `pip install -e .`
 
 #### 0. Parameters
@@ -61,6 +62,7 @@ Note that the actual `config/other.yaml` file contains comments explaining each 
 
 
 ### TODO
+----
 - More `_postprocess` function varieties/heuristics in `model.py`
 - Finish Documentation
 - GPU support
