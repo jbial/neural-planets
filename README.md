@@ -5,7 +5,8 @@ Neural planets is a repository for rendering planet-like spheres with topography
 to be large. With a mixture of 12 continuous and discrete design parameters (not including neural network weight parameters which can be arbitrarily large), the variety of planets is endless. This repository is dedicated to Manxin Chen.
 
 <p align="center">
-  <img src="samples/planet_interpolation.gif" alt="animated" />
+  <img src="samples/rotation.gif" alt="animated" width=412 />
+  <img src="samples/latent_interpolation.gif" alt="animated" width=412 />
 </p>
 
 <p align="center">
@@ -37,6 +38,10 @@ For brevity, I left out the command line parameters for the model.
 
 #### 3. Planet interpolation
 A special case of animations is the planet interpolation animation which corresponds to `animation_type=planet_interpolation`. This animation can interpolate between two different planet models, so it requires specification of parameters for a second neural network - this can be done in `config/other.yaml` or on the command line with the same structure as before but with the `other.[PARAMETER]` modifier.  
+
+<p align="center">
+  <img src="samples/planet_interpolation.gif" alt="animated" />
+</p>
 
 For this animation, you can run something like the above command but with `animation_type=planet_interpolation`, and again for brevity, you can specify the second planet's parameters in the `config/other.yaml` file:
 ```
