@@ -61,7 +61,8 @@ class PlanetMLP(nn.Module):
         init_limit=5,
         noise_decay=0.25,
         noise_scale=1.5,
-        min_delta=0.5
+        min_delta=0.5,
+        spiky=True
     ):
         """
         Args:
@@ -86,6 +87,7 @@ class PlanetMLP(nn.Module):
         self.noise_decay = noise_decay
         self.noise_scale = noise_scale
         self.min_delta = min_delta
+        self.spiky = spiky
 
         # check params
         assert init_limit > 0, "init_limit must be > 0"
@@ -186,14 +188,13 @@ class PlanetMLP(nn.Module):
         # makes things spiky
         delta = (1 - torch.abs(topo_delta))**2
 
-        # randomly choose to give spiky (mountainous) vs flat (plateau-y) terrain
-        # ... non-determinism makes life interesting
+        # choose to give spiky (mountainous) vs flat (plateau-y) terrain
         # also because I couldn't think of a better thing to do, but this function
-        # was meant to be modified anyway
-        if torch.rand(1) > 1/2:  # spiky only above the min_delta threshold
+        if self.spiky:  # spiky only above the min_delta threshold
             terrain = delta * (delta > self.min_delta)
         else:  # cut off the spikiness at the min delta threshold
             terrain = self.min_delta * (delta > self.min_delta) + delta * (delta <= self.min_delta)
+            
         return terrain.squeeze()
 
     def forward(self, x, latent=None, scales=1):

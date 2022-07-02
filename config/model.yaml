@@ -47,3 +47,5 @@ model:
   #   2. make the features flat (plateau-y)
   # with equal probability
   min_delta: 0.5
+
+  spiky: True

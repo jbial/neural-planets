@@ -56,3 +56,5 @@ other:
     # with equal probability
     min_delta: 0.5
 
+    spiky: False
+
