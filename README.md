@@ -4,8 +4,12 @@
 Neural planets is a repository for rendering planet-like spheres with topography generated from random neural networks. The design-space is intentionally crafted
 to be large. With a mixture of 12 continuous and discrete design parameters (not including neural network weight parameters which can be arbitrarily large), the variety of planets is endless.
 
-:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-![](samples/s1.png)  |  ![](samples/s2.png)   |  ![](samples/s3.png)   |  ![](samples/s4.png)
+<p float="left">
+  <img src="samples/s1.png" width="249" />
+  <img src="samples/s2.png" width="250" />
+  <img src="samples/s3.png" width="250" />
+  <img src="samples/s4.png" width="250" />
+</p>
 
 ### Usage
 Usage of this software requires Python 3.6 or higher, pip, and access to a command line. To setup, run `pip install -r requirements.txt` to install the necessary python modules, and then run `pip install -e .`.
