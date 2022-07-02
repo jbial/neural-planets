@@ -4,59 +4,53 @@ import numpy as np
 import moviepy.editor as mpy
 
 from mayavi import mlab
+from neural_planets.utils import planet_encoding
+
+# ---------------- MAYAVI SPECIFICS ----------------
+mlab.options.offscreen = True
+# --------------------------------------------------
 
 
-def generate_animation(config, *args):
-    """Generate specific type of planet animation
-    """
-    frame_fn = {
-        "rotation": lambda fig: rotate_frame(fig, *args, config),
-        "latent_interpolation": lambda fig: latent_interp_frame(fig, *args, config),
-        "planet_interpolation": lambda fig: planet_interp_frame(fig, *args, config)
-    }[config.animation_type]
-    _generate_animation(frame_fn, config)
-
-
-def _generate_animation(frame_fn, config):
+def generate_animation(frame_fn, config):
     """Create GIF animation from arbitrary frame function
     """
     mlab.clf()
-    fig = mlab.figure(size=tuple(config.img_size), bgcolor=config.bg_color)
+    fig = mlab.figure(size=tuple(config.img_size), bgcolor=tuple(config.bg_color))
     step_fn = frame_fn(fig)
-    os.makedirs('/'.join(config.animation_path.split('/')[:-1]), exist_ok=True)
     animation = mpy.VideoClip(step_fn, duration=config.duration)
-    animation.write_gif(config.animation_path, fps=config.frames_per_second)
+
+    os.makedirs("videos", exist_ok=True)
+    enc = planet_encoding(config)
+    animation.write_gif(
+        f"videos/{enc}_{config.animation_type.upper()}.gif", 
+        fps=config.frames_per_second
+    )
 
 
-def rotate_frame(fig, phi, theta, height_field, config):
+def rotate_frame(fig, xyz, height_field, config):
     """Generate frame with planet rotated
     """
     _ = mlab.mesh(
-        height_field * np.sin(phi) * np.cos(theta),
-        height_field * np.sin(phi) * np.sin(theta),
-        height_field * np.cos(phi),
+        *[height_field * c for c in xyz],
         scalars=height_field, 
-        colormap=config.color_map, 
+        colormap=config.colormap, 
         figure=fig
     )
 
     def make_frame(t):
-        mlab.view(azimuth= 360*t/config.duration, distance=config.view_distance) # camera angle
+        mlab.view(azimuth=360*t/config.duration, distance=config.view_distance)
         return mlab.screenshot(antialiased=True)
 
     return make_frame
 
 
-def latent_interp_frame(fig, phi, theta, latent1, latent2, planet, config):
+def latent_interp_frame(fig, xyz, latent1, latent2, planet, config):
     """Generate frame with planet interpolated along a line in latent space
     """
-    x_ = np.sin(phi)*np.cos(theta)
-    y_ = np.sin(phi)*np.sin(theta)
-    z_ = np.cos(phi)
-    grid = torch.from_numpy(np.stack([x_, y_, z_], axis=-1)).float()
-    hfield = planet(grid, latent1)
+    grid = torch.from_numpy(np.stack(xyz, axis=-1)).float()
+    hfield = planet(grid, latent1, scales=config.noise_levels).numpy()
     s = mlab.mesh(
-        *[hfield*c for c in [x_, y_, z_]], 
+        *[hfield*c for c in xyz], 
         scalars=hfield, 
         colormap=config.colormap, 
         figure=fig
@@ -65,28 +59,27 @@ def latent_interp_frame(fig, phi, theta, latent1, latent2, planet, config):
     def make_frame(t):
         step = t / config.duration
         mix = np.sin(np.pi * step)
-        hfield = planet(grid, (1 - mix) * latent1 + mix * latent2)
-        s.mlab_source.set(x=hfield*x_)
-        s.mlab_source.set(y=hfield*y_)
-        s.mlab_source.set(z=hfield*z_)
+        latent = (1 - mix) * latent1 + mix * latent2
+        hfield = planet(grid, latent, scales=config.noise_levels).numpy()
+        s.mlab_source.set(x=hfield*xyz[0])
+        s.mlab_source.set(y=hfield*xyz[1])
+        s.mlab_source.set(z=hfield*xyz[2])
         s.mlab_source.set(scalars=hfield)
-        mlab.view(azimuth=360*step, distance=config.view_distance)  # camera angle
+        mlab.view(azimuth=360*step, distance=config.view_distance) 
         return mlab.screenshot(antialiased=True)
 
     return make_frame
 
 
-def planet_interp_frame(fig, phi, theta, planet1, planet2, config):
+def planet_interp_frame(fig, xyz, planet1, planet2, config):
     """Generate frame with planet interpolated with another planet
     """
-    x_ = np.sin(phi)*np.cos(theta)
-    y_ = np.sin(phi)*np.sin(theta)
-    z_ = np.cos(phi)
-    grid = torch.from_numpy(np.stack([x_, y_, z_], axis=-1)).float()
-    hfield = planet1(grid)
+    grid = torch.from_numpy(np.stack(xyz, axis=-1)).float()
+    hfield1 = planet1(grid, scales=config.noise_levels).numpy()
+    hfield2 = planet2(grid, scales=config.other.noise_levels).numpy()
     s = mlab.mesh(
-        *[hfield*c for c in [x_, y_, z_]], 
-        scalars=hfield, 
+        *[hfield1*c for c in xyz], 
+        scalars=hfield1, 
         colormap=config.colormap, 
         figure=fig
     )
@@ -94,10 +87,10 @@ def planet_interp_frame(fig, phi, theta, planet1, planet2, config):
     def make_frame(t):
         step = t / config.duration
         mix = np.sin(np.pi * step)
-        hfield = planet1(grid) * (1 - mix) + planet2(grid) * mix
-        s.mlab_source.set(x=hfield*x_)
-        s.mlab_source.set(y=hfield*y_)
-        s.mlab_source.set(z=hfield*z_)
+        hfield = hfield1 * (1 - mix) + hfield2 * mix
+        s.mlab_source.set(x=hfield*xyz[0])
+        s.mlab_source.set(y=hfield*xyz[1])
+        s.mlab_source.set(z=hfield*xyz[2])
         s.mlab_source.set(scalars=hfield)
         mlab.view(azimuth=360*step, distance=config.view_distance) # camera angle
         return mlab.screenshot(antialiased=True)

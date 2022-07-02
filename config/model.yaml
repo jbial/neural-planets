@@ -1,14 +1,49 @@
+# ------------ PLANET MODEL HYPERPARAMETERS ------------
 model:
 
-  in_dim: 3
+  in_dim: 3  # input dimension of model, this is fixed
+
+  # list of integers specifying the number of nodes in each hidden layer
   layers: [64, 64, 64]
+
+  # radius of planet
   radius: 10
+
+  # list of string activation functions applied after the input layers
+  # and the hidden layers up to the penultimate one
+  # LIST MUST BE THE SAME LENGTH AS THE `layers` LIST
+  # examples of available functions are: 
+  #   [softplus, tanh, cos, sigmoid, mish, logsigmoid, ...]
+  # most pytorch functions and activation functions 
+  # from the nn.functional module) should be valid input strings
   activations: [sigmoid, sin, tanh]
-  zdim: 16 
-  ffeats: 8
-  ffscale: 1
+  # the activation function to apply after the last hidden layer
   final_activation: tanh
+
+  # dimension of latent vector for each grid point
+  zdim: 16 
+
+  # fourier features (see https://arxiv.org/abs/2006.10739 for reference)
+  # lifts input from R^3 to a randomized R^{ffeats} fourier basis space
+  # TL;DR makes input squiggly
+  ffeats: 8  # dimension of fourier basis space
+  ffscale: 1  # scale of randomness: higher = very squiggly, lower = less squiggly
+
+  # initializes weights in each layer uniformly in the range[-init_limit, init_limit]
   init_limit: 2
+
+  # applies a decay factor after the _postprocess function equal to:
+  #  noise_decay ^ noise_level_i
+  # should be < 1
   noise_decay: 0.25
+
+  # applies a scale factor to the input before the neural network equal to:
+  #  noise_scale ^ noise_level_i
   noise_scale: 2
+
+  # cut-off threshold for mountain-like features
+  # above this threshold, the model will either:
+  #   1. make the features spiky (mountain top-y)
+  #   2. make the features flat (plateau-y)
+  # with equal probability
   min_delta: 0.5

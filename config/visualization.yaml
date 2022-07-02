@@ -1,3 +1,4 @@
+# ------------ VISUALIZATION & ANIMATION PARAMETERS ------------
 fig_size: [10, 10]  # for (phi, theta) plane visualization
 dpi: 200
 
@@ -34,8 +35,9 @@ img_size: [500, 500]  # resolution for planet renderings and animations
 save_format: png
 
 # animation parameters
-animation_type: rotation
 duration: 10  # in seconds
 view_distance: 100  # distance btwn camera and planet
 frames_per_second: 30
-animation_path: "videos/rotate.gif"  # GIF save format
+
+# can take values in: [rotation, latent_interpolation, planet_interpolation]
+animation_type: rotation

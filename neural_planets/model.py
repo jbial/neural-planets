@@ -3,6 +3,7 @@ import torch.nn as nn
 
 
 class LinearBlock(nn.Module):
+
     def __init__(self, din, dout, act='relu', lim=2):
         """
         Args:
@@ -31,7 +32,7 @@ class LinearBlock(nn.Module):
         try:
             return eval(f"torch.{name}")
         except:
-            return eval(f"F.{name}")
+            return eval(f"nn.functional.{name}")
     
     def forward(self, x):
         """Forward pass
@@ -80,12 +81,18 @@ class PlanetMLP(nn.Module):
         self.zdim = zdim
         self.init_limit = init_limit
         self.ffeats = ffeats
-        self.acts = activations
         self.in_dim = in_dim
         self.radius = radius
         self.noise_decay = noise_decay
         self.noise_scale = noise_scale
         self.min_delta = min_delta
+
+        # check params
+        assert init_limit > 0, "init_limit must be > 0"
+        assert noise_decay < 1.0, "noise_decay parameter must be < 1"
+        assert (activations is None) or (len(activations) == len(layers)), (
+            f"# of activation functions {activations} != # of layers {layers}"
+        )
         
         # fourier features initialization
         if ffeats > 0:
@@ -96,13 +103,7 @@ class PlanetMLP(nn.Module):
         self.hidden = list(zip(layers, layers[1:]))
         
         # activation functions
-        if self.acts is None:
-            self.acts = ['tanh'] * len(layers)
-        else:
-            assert len(self.acts) == len(layers), (
-                f"num activation functions {len(self.acts)} != num layers {len(layers)}"
-            )
-            
+        self.acts = activations or ['tanh'] * len(layers)
         self.init_act = self._get_activation_fn(self.acts[0])
         self.final_act = (
             final_activation if hasattr(final_activation, '__call__')
@@ -131,7 +132,7 @@ class PlanetMLP(nn.Module):
         try:
             return eval(f"torch.{name}")
         except:
-            return eval(f"F.{name}")
+            return eval(f"nn.functional.{name}")
         
     def _create_layers(self):
         """Initialize the hidden layers of NN
@@ -182,16 +183,20 @@ class PlanetMLP(nn.Module):
         Returns:
             np.ndarray: actual height map of the planet of shape (H, W)
         """
+        # makes things spiky
         delta = (1 - torch.abs(topo_delta))**2
+
         # randomly choose to give spiky (mountainous) vs flat (plateau-y) terrain
         # ... non-determinism makes life interesting
-        if torch.rand(1) > 1/2:  # spiky
+        # also because I couldn't think of a better thing to do, but this function
+        # was meant to be modified anyway
+        if torch.rand(1) > 1/2:  # spiky only above the min_delta threshold
             terrain = delta * (delta > self.min_delta)
-        else:  # flat
+        else:  # cut off the spikiness at the min delta threshold
             terrain = self.min_delta * (delta > self.min_delta) + delta * (delta <= self.min_delta)
         return terrain.squeeze()
 
-    def forward(self, x, scales=1, latent=None):
+    def forward(self, x, latent=None, scales=1):
         """Generate topography for the planet
         
         Args:
@@ -219,7 +224,7 @@ class PlanetMLP(nn.Module):
             coords = self.init_act(coords)
             coords = self.mlp(coords)
             deltas = self.final_act(coords)
-            topo_map += ((self.noise_decay ** (i+1)) * self._postprocess(deltas))
+            topo_map += ((self.noise_decay**(i+1)) * self._postprocess(deltas))
             
         return (topo_map + self.radius).detach()
             

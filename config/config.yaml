@@ -1,11 +1,21 @@
 defaults:
   - model
+  - other
   - visualization
   - override hydra/job_logging: none  
 
-map_resolution: 512
-noise_levels: 5
+# resolution in the angular domain (phi, theta)
+map_resolution: 512  
+
+# layers of noise to add onto each other at different scales
+# each noise layer i is computed as noise_decay^i * postprocess( model(noise_scale^i * grid) )
+# they are then summed up to generate the terrain map
+noise_levels: 5  
+
+# for reproducibility
 random_seed: 999
+
+# for saving figures and animations with unique user-specified strings
 prefix: "planet"
 
 hydra:

@@ -1,6 +1,6 @@
-moviepy
-mayavi
+moviepy==1.0.3
+mayavi==4.7.4
 numpy
 matplotlib
-torch
-hydra-core
+torch==1.10.2
+hydra-core==1.1.0
