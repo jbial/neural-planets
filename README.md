@@ -15,7 +15,7 @@ to be large. With a mixture of 12 continuous and discrete design parameters (not
   <img src="samples/s4.png" width="204" />
 </p>
 
-### Usage
+### Installation
 ----
 Usage of this software requires Python 3.6 or higher, pip, and access to a command line. To setup, run the following commands in a shell: 
 ```sh
@@ -25,6 +25,8 @@ pip install -r requirements.txt  # install required libraries
 pip install -e .  # set up the package
 ```
 
+### Usage
+----
 #### 0. Parameters
 This software utilizes [hydra-core](https://hydra.cc/docs/intro/) for handling parameter settings. For a reference of every mutable parameter and it's description, refer to the YAML files in the `config` directory.
 
