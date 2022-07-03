@@ -18,7 +18,13 @@ to be large. With a mixture of 12 continuous and discrete design parameters (not
 
 ### Usage
 ----
-Usage of this software requires Python 3.6 or higher, pip, and access to a command line. To setup, run `pip install -r requirements.txt` to install the necessary python modules, and then run `pip install -e .`
+Usage of this software requires Python 3.6 or higher, pip, and access to a command line. To setup, run the following commands in a shell: 
+```sh
+git clone https://github.com/jbial/neural-planets  # get the code
+cd neural-planets  # move into the code directory 
+pip install -r requirements.txt  # install required libraries
+pip install -e .  # set up the package
+```
 
 #### 0. Parameters
 This software utilizes [hydra-core](https://hydra.cc/docs/intro/) for handling parameter settings. For a reference of every mutable parameter and it's description, refer to the YAML files in the `config` directory.
@@ -37,7 +43,7 @@ python scripts/animate_planet.py prefix=unique-identifying-prefix random_seed=30
 For brevity, I left out the command line parameters for the model.
 
 #### 3. Planet interpolation
-A special case of animations is the planet interpolation animation which corresponds to `animation_type=planet_interpolation`. This animation can interpolate between two different planet models, so it requires specification of parameters for a second neural network - this can be done in `config/other.yaml` or on the command line with the same structure as before but with the `other.[PARAMETER]` modifier.  
+A special case of animations is the planet interpolation animation which corresponds to `animation_type=planet_interpolation`. This animation can interpolate between two different planet models, so it requires specification of parameters for a second neural network - this can be done manually by editing the parameters in the `config/other.yaml` file, or on the command line with additional planet parameters modified by the `other.[PARAMETER]` prefix.  
 
 <p align="center">
   <img src="samples/planet_interpolation.gif" alt="animated" />
